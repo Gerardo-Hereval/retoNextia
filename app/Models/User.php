@@ -8,6 +8,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use App\Models\Base;
+use App\Models\Bien;
 
 
 
@@ -20,7 +22,9 @@ class User extends Authenticatable implements JWTSubject
      *
      * @var array<int, string>
      */
+
     protected $fillable = [
+        'base_id',
         'name',
         'username',
         'password',
@@ -52,5 +56,10 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return[];
+    }
+
+
+    public function biens(){
+        return $this->hasMany(Bien::class,'user_id');
     }
 }

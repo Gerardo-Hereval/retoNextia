@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\auth;
 
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
-
+use App\Models\Base;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -95,11 +94,18 @@ class AuthController extends Controller
         if($validator->fails()){
             return response()->json($validator->errors()->toJson(),400);
         }
-        $user =User::create(array_merge(
-            $validator->validate(),
-            ['password'=>bcrypt($request->password)]
+        $base= Base::create();
 
-        ));
+        $user = $base->users()->create(
+            array_merge(
+                $validator->validate(),
+                ['password'=>bcrypt($request->password)]
+            ));
+
+//        $user =User::create(array_merge(
+//            $validator->validate(),
+//          ['password'=>bcrypt($request->password)]
+////   ));
 
         return response()->json([
             'message'=>'¡Usuario registrado exitosamente!',
