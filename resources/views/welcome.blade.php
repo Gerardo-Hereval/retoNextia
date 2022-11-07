@@ -10,7 +10,7 @@
 
     <body>
     <h1>
-        Hola mundo
+        Prueba Tecnica PHP
     </h1>
     </body>
 </html>
