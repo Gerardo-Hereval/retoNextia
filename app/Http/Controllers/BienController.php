@@ -10,6 +10,11 @@ use Maatwebsite\Excel\Excel;
 class BienController extends Controller
 
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      * @param Request $request
@@ -26,29 +31,19 @@ class BienController extends Controller
                 for ($i=0,$long=count($ids);$i<$long;++$i){
             $biene[]=$bienes[0][0] ;
         }
-
-
-
         $user = auth()->user();
         $data = [$biene,$user];
-       return $data;
-    }
+        return  response()->json([
+            'message'=>'¡Se encontraron los siguientes datos!',
+            'Articulos'=>$data, 'user'=>$user
+        ],201);    }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
     public function store(Request $request)
     {
@@ -57,34 +52,14 @@ class BienController extends Controller
         $bien->descripcion = $request->descripcion;
         //$bien->user_id=auth()->user()->id;
 
-
+        $user = auth()->user();
         $articulo =$request->user()->biens()->save($bien);
-            return $articulo;
+        return  response()->json([
+            'message'=>'¡Articulo creado exitosamente :)!',
+            'Articulo'=>$articulo, 'user'=>$user
+        ],201);
 
        // ));
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Request $request)
-    {
-        //
-
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**
@@ -100,9 +75,10 @@ class BienController extends Controller
         $bien->descripcion = $request->descripcion;
         $bien->user_base_id= auth()->user()->getAuthIdentifier();
         $bien->save();
+        $user = auth()->user();
         return  response()->json([
-        'message'=>'¡Bien modificado exitosamente!',
-        'bien'=>$bien
+        'message'=>'¡Articulo modificado exitosamente :)!',
+        'bien'=>$bien, 'user'=>$user
     ],201);
     }
 
@@ -116,7 +92,7 @@ class BienController extends Controller
     {
         $bienes = Bien::destroy($request->id);
         return response()->json([
-            'message'=>'¡articulo eliminado exitosamente!',
+            'message'=>'¡articulo eliminado exitosamente :( !',
             'bienes'=>$bienes
         ],201);
     }
