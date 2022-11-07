@@ -55,11 +55,15 @@ class User extends Authenticatable implements JWTSubject
     }
     public function getJWTCustomClaims()
     {
-        return[];
+        return[
+        ];
     }
 
 
     public function biens(){
-        return $this->hasMany(Bien::class,'user_id');
+        return $this->hasMany(Bien::class);
     }
+
+    protected $primaryKey='base_id';
+    protected $table='users';
 }

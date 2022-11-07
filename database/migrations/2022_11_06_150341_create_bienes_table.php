@@ -14,9 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::create('bienes', function (Blueprint $table) {
-            $table->string('articulo');
-            $table->string('descripcion');
-            $table->foreignId('user_id');
+            $table->id();
+            $table->string('articulo')->nullable();
+            $table->string('descripcion')->nullable();
+            $table->foreignId('user_base_id');
             $table->timestamps();
        });
     }

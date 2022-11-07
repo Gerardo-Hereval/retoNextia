@@ -14,5 +14,9 @@ class Base extends Model
         return $this->hasOne(User::class,'base_id');
     }
 
+    protected $table='bases';
+
+
+
 
 }

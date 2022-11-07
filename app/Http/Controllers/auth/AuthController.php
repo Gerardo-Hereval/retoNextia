@@ -8,6 +8,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
+use Illuminate\Support\Facades\DB;
+
 class AuthController extends Controller
 {
     /**
@@ -28,10 +30,11 @@ class AuthController extends Controller
     public function login()
     {
         $credentials = request(['username', 'password']);
-
         if (! $token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
+
+
 
         return $this->respondWithToken($token);
     }
@@ -94,22 +97,19 @@ class AuthController extends Controller
         if($validator->fails()){
             return response()->json($validator->errors()->toJson(),400);
         }
-        $base= Base::create();
 
-        $user = $base->users()->create(
-            array_merge(
-                $validator->validate(),
-                ['password'=>bcrypt($request->password)]
-            ));
+            $base= Base::create();
 
-//        $user =User::create(array_merge(
-//            $validator->validate(),
-//          ['password'=>bcrypt($request->password)]
-////   ));
+            $user = $base->users()->create(
+                array_merge(
+                    $validator->validate(),
+                    ['password'=>bcrypt($request->password)]
+                ));
+            return response()->json([
+                'message'=>'¡Usuario registrado exitosamente!',
+                'user'=>$user
+            ],201);
 
-        return response()->json([
-            'message'=>'¡Usuario registrado exitosamente!',
-            'user'=>$user
-        ],201);
+
     }
 }

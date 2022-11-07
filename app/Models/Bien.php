@@ -9,8 +9,11 @@ class Bien extends Model
 {
     use HasFactory;
 
-    public function user(){
-        return $this->belongsTo(User::class,'bien_')->select(['base_id','name','username']);
+    public function users(){
+        return $this->belongsTo(User::class,'bien_id')->select(['name','username']);
     }
+
+
+    protected $table='bienes';
 
 }
